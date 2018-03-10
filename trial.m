@@ -1,12 +1,16 @@
+% this is the main script of the project
 clc;
 close all;
 clear all;
 
+%step one: connect to arduino first
 comPort = 'COM3';
 if(~exist('serialFlag','var'))
     [gyroConnection_s,serialFlag] = setupSerial(comPort);
 end
 
+
+%create the UI for 3D animation
 if(~exist('figureHandle','var') || ~ishandle(figureHandle))
     figureHandle = figure(1);
 end
@@ -61,6 +65,10 @@ pause(0.25);
 AngleX = 0;
 AngleY = 0;
 AngleZ = 0;
+
+
+%step three: updated the data from gyroscope frequently
+%usage of 'hgtransform', 'set(hgTransform,'Matrix',R);' is very powerful here.
 while( get(stopButton,'Value') ==0)
     [AngleX, AngleY,AngleZ] = trial_angle(AngleX,AngleY,AngleZ,gyroConnection_s);
 
@@ -89,18 +97,6 @@ while( get(stopButton,'Value') ==0)
         'yrotate', AngleY*pi/180,...
         'zrotate', AngleZ*pi/180);
     set(hgTransform,'Matrix',R);
-
-    
     drawnow;
 end
 closeSerial();
-        
-        
-        
-    
-    
-    
-
-
-
-
