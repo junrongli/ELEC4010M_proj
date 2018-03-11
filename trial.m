@@ -72,10 +72,10 @@ while( get(stopButton,'Value') ==0)
      
      if currentstatus ~= get(dynamicButton,'Value')        
         if get(dynamicButton,'Value') ==1
-            dragonzoom('on');
+            dragzoom('on');
             currentstatus = get(dynamicButton,'Value'); 
         else
-            dragonzoom('off');
+            dragzoom('off');
             currentstatus = get(dynamicButton,'Value'); 
      end
      
