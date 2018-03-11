@@ -14,7 +14,7 @@ tic;
             newAngleZ = newAngleZ + ratez;
 
 reangleX = anglex+newAngleX * current ;
-reangleY = angley+newAngleZ * current ;
+reangleY = angley+newAngleY * current ;
 reangleZ = anglez+newAngleZ * current ;
 
     while reangleX >=360
