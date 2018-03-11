@@ -1,6 +1,6 @@
 function [ s,flag ] = setupSerial( comPort )
 %SETUPSERIAL Summary of this function goes here
-%   To indicate that the arduino can be connected successfully.
+%   Detailed explanation goes here
 flag = 1;
 s = serial(comPort);
 

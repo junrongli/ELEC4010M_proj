@@ -29,7 +29,7 @@ reangleZ = anglez+newAngleZ * current ;
     while reangleY<=-360
         reangleY = reangleY+360;
     end
-        while reangleZ >=360
+    while reangleZ >=360
         reangleZ = reangleZ-360;
     end
     while reangleZ<=-360

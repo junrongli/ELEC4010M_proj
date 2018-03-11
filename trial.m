@@ -30,11 +30,15 @@ if(~exist('axisSwitchZ','var'))
     axisSwitchZ = uicontrol('Style','checkbox','String','Z axis','pos',[400 0 50 23],'parent',figureHandle);
 end
 
+if(~exist('degreeLabelheading','var'))
+    degreeLabelheading = uicontrol('Style','checkbox','String','H: 0 degrees','pos',[450 200 100 23],'parent',figureHandle);
+end
+
 if(~exist('degreeLabelX','var'))
     degreeLabelX = uicontrol('Style','checkbox','String','X: 0 degrees','pos',[450 100 100 23],'parent',figureHandle);
 end
 
-if(~exist('degreeLabelZ','var'))
+if(~exist('degreeLabelY','var'))
     degreeLabelY= uicontrol('Style','checkbox','String','Y:0 degrees','pos',[450 75 100 23],'parent',figureHandle);
 end
 if(~exist('degreeLabelZ','var'))
@@ -50,11 +54,14 @@ view(3);
 axis off;
 axis equal;
 
-[cylX,cylY,cylZ] = cylinder(0.5);
-[conX,conY,conZ] = cylinder([1,0]);
+[xc, yc, zc] = cylinder([0.1 0.0]); %cone
+[xb, yb, zb] = cylinder([0.2 0.2]);
 
-hgTransformArray(1)=surface(cylX,cylY,cylZ);
-hgTransformArray(2)=surface(conX,conY,conZ+1);
+hgTransformArray(1) = surface(xc,zc,-yc,'FaceColor','red');
+hgTransformArray(2) = surface(zb,yb,0.5*xb,'FaceColor','green');
+hgTransformArray(3) = surface(-zb,yb,0.5*xb,'FaceColor','blue');
+hgTransformArray(4) = surface(xb,-1.5*zb,0.5*yb,'FaceColor','cyan');
+hgTransformArray(5) = surface(xc,1.5*yc-1.3,zb,'FaceColor','magenta');
 
 hgTransform = hgtransform('Parent',graphAxes);
 
@@ -65,11 +72,12 @@ pause(0.25);
 AngleX = 0;
 AngleY = 0;
 AngleZ = 0;
+heading =0;
 
 currentstatus = get(dynamicButton,'Value'); 
 while( get(stopButton,'Value') ==0)
+    
     [AngleX, AngleY,AngleZ] = trial_angle(AngleX,AngleY,AngleZ,gyroConnection_s);
-     
      if currentstatus ~= get(dynamicButton,'Value')        
         if get(dynamicButton,'Value') ==1
             dragzoom('on');
@@ -77,8 +85,7 @@ while( get(stopButton,'Value') ==0)
         else
             dragzoom('off');
             currentstatus = get(dynamicButton,'Value'); 
-     end
-     
+        end
      end
      
      if get(axisSwitchX,'Value') ==0
@@ -99,14 +106,20 @@ while( get(stopButton,'Value') ==0)
         set(resetRadioButton,'Value',0);
     end
     
+    heading = trial_heading(gyroConnection_s);
+    set(degreeLabelheading,'String',['H: ' num2str((heading)) 'degrees'])
+    
+    
+   
+    
     set(degreeLabelX,'String',['X: ' num2str((AngleX)) 'degrees'])
     set(degreeLabelY,'String',['Y: ' num2str((AngleY)) 'degrees'])
     set(degreeLabelZ,'String',['Z: ' num2str((AngleZ)) 'degrees'])
-    R = makehgtform('xrotate', AngleX*pi/180,...
-        'yrotate', AngleY*pi/180,...
+    R = makehgtform('xrotate', -AngleY*pi/180,...
+        'yrotate', AngleX*pi/180,...
         'zrotate', AngleZ*pi/180);
     set(hgTransform,'Matrix',R);
-
+%
     
     drawnow;
 end
