@@ -108,15 +108,11 @@ while( get(stopButton,'Value') ==0)
     
     heading = trial_heading(gyroConnection_s);
     set(degreeLabelheading,'String',['H: ' num2str((heading)) 'degrees'])
-    
-    
-   
-    
-    set(degreeLabelX,'String',['X: ' num2str((AngleX)) 'degrees'])
-    set(degreeLabelY,'String',['Y: ' num2str((AngleY)) 'degrees'])
+    set(degreeLabelX,'String',['X: ' num2str((-AngleY)) 'degrees'])
+    set(degreeLabelY,'String',['Y: ' num2str((-AngleX)) 'degrees'])
     set(degreeLabelZ,'String',['Z: ' num2str((AngleZ)) 'degrees'])
-    R = makehgtform('xrotate', -AngleY*pi/180,...
-        'yrotate', AngleX*pi/180,...
+    R = makehgtform('xrotate', -AngleX*pi/180,...
+        'yrotate', -AngleY*pi/180,...
         'zrotate', AngleZ*pi/180);
     set(hgTransform,'Matrix',R);
 %

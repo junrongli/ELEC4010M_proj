@@ -1,4 +1,3 @@
-
 clc;
 close all;
 clear all;
@@ -53,4 +52,6 @@ while( get(stopButton,'Value') ==0)
     set(velocityLabelX,'String',['X: ' num2str((V_X)) ',m/s'])
     set(velocityLabelY,'String',['Y: ' num2str((V_Y)) 'm/s'])
     set(velocityLabelZ,'String',['Z: ' num2str((V_Z)) 'm/s'])
+    pause(1);
 end
+closeSerial();
