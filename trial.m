@@ -1,22 +1,22 @@
-% this is the main script of the project
 clc;
 close all;
 clear all;
 
-%step one: connect to arduino first
 comPort = 'COM3';
 if(~exist('serialFlag','var'))
     [gyroConnection_s,serialFlag] = setupSerial(comPort);
 end
 
-
-%create the UI for 3D animation
 if(~exist('figureHandle','var') || ~ishandle(figureHandle))
     figureHandle = figure(1);
 end
 
 if(~exist('stopButton','var'))
     stopButton = uicontrol('Style','togglebutton','String','Stop & Close Serial Port','pos',[0 0 200 25],'parent',figureHandle);
+end
+
+if(~exist('dynamicButton','var'))
+    dynamicButton = uicontrol('Style','checkbox','String','drag and zoom','pos',[0 25 200 25],'parent',figureHandle);
 end
 
 if(~exist('axisSwitchX','var'))
@@ -66,12 +66,21 @@ AngleX = 0;
 AngleY = 0;
 AngleZ = 0;
 
-
-%step three: updated the data from gyroscope frequently
-%usage of 'hgtransform', 'set(hgTransform,'Matrix',R);' is very powerful here.
+currentstatus = get(dynamicButton,'Value'); 
 while( get(stopButton,'Value') ==0)
     [AngleX, AngleY,AngleZ] = trial_angle(AngleX,AngleY,AngleZ,gyroConnection_s);
-
+     
+     if currentstatus ~= get(dynamicButton,'Value')        
+        if get(dynamicButton,'Value') ==1
+            dragonzoom('on');
+            currentstatus = get(dynamicButton,'Value'); 
+        else
+            dragonzoom('off');
+            currentstatus = get(dynamicButton,'Value'); 
+     end
+     
+     end
+     
      if get(axisSwitchX,'Value') ==0
         AngleX =0;
      end
@@ -97,6 +106,18 @@ while( get(stopButton,'Value') ==0)
         'yrotate', AngleY*pi/180,...
         'zrotate', AngleZ*pi/180);
     set(hgTransform,'Matrix',R);
+
+    
     drawnow;
 end
 closeSerial();
+        
+        
+        
+    
+    
+    
+
+
+
+
